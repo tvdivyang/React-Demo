@@ -3,9 +3,9 @@ import "./App.css";
 import { Navbar } from "./component/navbar";
 import { Login } from "./pages/Login";
 import { Signup } from "./pages/Signup";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
-import Details from "./component/Details";
+import Details from "./component/details";
 
 function App() {
   return (
@@ -13,15 +13,9 @@ function App() {
     
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-      <Routes>
-        <Route path="/Signup" element={<Signup />} />
-      </Routes>
-      <Routes>
+        <Route path="/" element={<Home  />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-      </Routes>
-      <Routes>
         <Route path="/details" element={<Details/>} />
       </Routes>
       {/* <Footer/> */}

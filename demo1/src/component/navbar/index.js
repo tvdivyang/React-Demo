@@ -4,6 +4,7 @@ import logo from "../../assets/index"
 import { NavLink } from 'react-router-dom'
 
 export const Navbar = () => {
+  localStorage.setItem("posatdata",JSON)
   return (
     <>
      <nav className="navbar navbar-expand-lg navbar-light p-0" >
@@ -18,10 +19,10 @@ export const Navbar = () => {
           <NavLink className="nav-link text-dark"  to="/">Home</NavLink>
          </li>
         <li className="nav-item">
-          <NavLink className="nav-link text-dark" to="/Signup">Sign Up </NavLink>
+          <NavLink className="nav-link text-dark" to="/signup">Sign Up </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink className="nav-link text-dark"  to="/Login">Log In</NavLink>
+          <NavLink className="nav-link text-dark"  to="/login">Log In</NavLink>
         </li>
       </ul>
     </div>

@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
 export const Login = () => {
-
   const history = useNavigate();
 
   const [inpval, setinpval] = useState({
     email: "",
     password: "",
   });
-
-
   const getuserArr = localStorage.getItem("postdata");
 
   const getdata = (e) => {
@@ -18,38 +15,42 @@ export const Login = () => {
     setinpval({ ...inpval, [name]: value });
   };
 
+  const [error, seterror] = useState({});
+  var errors = {};
   const addDate = (e) => {
     e.preventDefault();
 
     const { email, password } = inpval;
-    const emailv = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\.[a-zA-z]{2,3}$/;
-    
+    // const emailv = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\.[a-zA-z]{2,3}$/;
+
     // console.log(inpval);
 
-    if (!email.match(emailv)) {
-      console.log("enter email");
-    }else{
-
-      if(getuserArr && getuserArr.length){
+    if (!email) {
+      errors.email = "email Required";
+    }
+    if (!password || password.length <= 5) {
+      errors.password = " password Required";
+    } else {
+      if (getuserArr && getuserArr.length) {
         const userdata = JSON.parse(getuserArr);
-        const userlogin = userdata.filter((Ele,index)=>{
-          return Ele.email === email && Ele.password === password
+        console.log("userdata",userdata);
+
+        const userlogin = userdata.filter((Ele, index) => {
+          return Ele.email === email && Ele.password === password;
+
         });
+        console.log("userloginnnn",userlogin);
         // console.log(userlogin);
-        
-        if(userlogin.length === 0){
-        alert("Enter ")
-        }
-        else{
-          history("/details")
+
+        if (userlogin.length === 0) {
+          alert("please enter valid value");
+        } else {
+          history("/details");
         }
       }
-        
-      // console.log("success");
-      // localStorage.setItem("postdata",JSON.stringify([...data,inpval]));
     }
+    seterror(errors);
   };
-
 
   return (
     <>
@@ -58,23 +59,32 @@ export const Login = () => {
         <form className="container align-items-center d-flex flex-column">
           <div className="mb-3 w-50">
             <h6>Enter Email Address</h6>
-            <input type="email" className="form-control" name="email" onChange={getdata}/>
-            <span id="Ename"></span>
+            <input
+              type="email"
+              className="form-control"
+              name="email"
+              onChange={getdata}
+            />
+            <p className="text-danger">{error?.email}</p>
           </div>
           <div className="mb-3 w-50">
             <h6>Enter Password</h6>
-            <input type="password" className="form-control" name="password" onChange={getdata}/>
-            <span id="Ename"></span>
+            <input
+              type="password"
+              className="form-control"
+              name="password"
+              onChange={getdata}
+            />
+            <p className="text-danger">{error?.password}</p>
           </div>
-
           <div className="mb-3">
-          <button
+            <button
               type="button"
               className="btn btn-lg btn-block"
               style={{ backgroundColor: "#87d3ec" }}
               onClick={addDate}
             >
-            Log In
+              Log In
             </button>
           </div>
         </form>
@@ -82,3 +92,6 @@ export const Login = () => {
     </>
   );
 };
+
+
+export default Login;

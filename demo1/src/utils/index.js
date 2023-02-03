@@ -1,0 +1,1 @@
+export const signupdata = ["type:text","name:text","placeholder=Enter NAME"]
