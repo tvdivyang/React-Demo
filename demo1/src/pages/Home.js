@@ -23,6 +23,8 @@ export const Home = () => {
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
             <th scope="col">Email</th>
+            <th scope="col">Image</th>
+            
           </tr>
         </thead>
         <tbody>
@@ -33,6 +35,7 @@ export const Home = () => {
                 <td>{item.first_name}</td>
                 <td>{item.last_name}</td>
                 <td>{item.email}</td>
+                <td><img src={item.avatar}></img></td>
               </tr>
             );
           })}

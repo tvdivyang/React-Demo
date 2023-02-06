@@ -1,11 +1,12 @@
 import "./App.css";
-// import { Footer } from "./component/Footer";
 import { Navbar } from "./component/navbar";
+import { Footer } from "./component/footer";
 import { Login } from "./pages/Login";
 import { Signup } from "./pages/Signup";
 import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
 import Details from "./component/details";
+
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/details" element={<Details/>} />
       </Routes>
-      {/* <Footer/> */}
+    <Footer/>
     </>
   );
 }
