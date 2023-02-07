@@ -2,6 +2,10 @@ import "./App.css";
 import React, { Component } from "react";
 import Count from "./Count";
 import UseRef from "./UseRef";
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
+import Protel from "./protel";
+import ReactDOM from 'react-dom/client';
 
 export default class App extends Component {
   constructor() {
@@ -25,6 +29,7 @@ export default class App extends Component {
 
     return (
       <>
+
         <div>
           <h5>React Jsx</h5>
           hello {this.name}
@@ -61,12 +66,25 @@ export default class App extends Component {
             WillUnmountm
           </button>
         </div>
+
+        <hr></hr>
+    <div>
+      <Tippy content="hello i am divyang">
+        <button>Tooltip</button>
+      </Tippy>
+          
+        </div>
         <hr />
+
       </>
     );
   }
 }
 
+const root = ReactDOM.createRoot(document.getElementById('newRoot'));
+root.render(
+ <Protel></Protel>
+);
 // const shoot = () => {
 //   document.getElementById("hy").innerHTML = "jay swaminarayan";
 // }

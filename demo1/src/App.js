@@ -6,7 +6,7 @@ import { Signup } from "./pages/Signup";
 import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
 import Details from "./component/details";
-
+import 'react-tooltip/dist/react-tooltip.css'
 
 function App() {
   return (

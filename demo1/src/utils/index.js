@@ -39,12 +39,12 @@ export const Logins = [
   }
 ];
 
-// export const Signbtn = [
-//   {
-//     type:"button",
-//     style:{ backgroundColor: "#87d3ec" },
-//   }
-// ]
+export const Signbtn = [
+  {
+    type:"button",
+    style:{ backgroundColor: "#87d3ec" },
+  }
+]
 
 // export const Loginbtn = [
 //   {
