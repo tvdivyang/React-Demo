@@ -36,3 +36,29 @@
     transform: rotate(360deg);
   }
 }
+
+
+#myDIV {
+  border: 1px solid black;
+  background-color: lightblue;
+  width: 100px;
+  height: 100px;
+  overflow:hidden;  
+  transition: all 2s;
+}
+
+#myDIV:hover {
+  font-weight:bold;
+  background-color: coral;
+  width: 250px;
+  height: 250px;
+  text-align: center;
+  border-radius: 50px;
+
+}
+.animation{
+  height: 40px;
+  width: 40px;
+  background-color: #8790a1;
+  margin-left: 15px;
+}
