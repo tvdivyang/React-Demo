@@ -1,9 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
-import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css";
-import noteContext from "../context/Notecontext";
+import React, { useEffect, useState } from "react";
 
-export const Home = () => {
+export const Lazy = () => {
   const [user, setUser] = useState([]);
 
   const fetchData = async () => {
@@ -12,16 +9,18 @@ export const Home = () => {
       .then((data) => setUser(data.data));
   };
   useEffect(() => {
+
     fetchData();
-  }, []);
+  },[]);
   console.log("user", user);
 
-  const context = useContext(noteContext)
+
+
   return (
     <>
-      <h1 className="text-center m-4">API CALLING</h1>
+      {/* <h1 className="text-center m-4">API CALLING</h1> */}
       <table className="table table-bordered">
-        <thead>
+        {/* <thead>
           <tr>
             <th scope="col">Id</th>
             <th scope="col">First Name</th>
@@ -29,7 +28,7 @@ export const Home = () => {
             <th scope="col">Email</th>
             <th scope="col">Image</th>
           </tr>
-        </thead>
+        </thead> */}
         <tbody>
           {user.map((item, index) => {
             return (
@@ -46,16 +45,9 @@ export const Home = () => {
           })}
         </tbody>
       </table>
-      <Tippy content="i am a tooltip">
-        <button>click me</button>
-      </Tippy>
-        <hr/>
-
-        <div>
-          <h1>context</h1>
-          <p>{context.name}</p>
-        </div>
-
+    
     </>
   );
-};
+}
+
+export default Lazy;
