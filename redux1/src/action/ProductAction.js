@@ -1,10 +1,13 @@
-
-
 export const ProductList = () => {
-    let data ="hello";
-    console.log(data);
+  console.log("product-list")
   return {
     type: "PRODUCT_LIST",
-    data: data,
+   
   };
 };
+// export const srtProductList = (data) => {
+//   return {
+//     type: "SET_PRODUCT_LIST",
+//     data,
+//   };
+// };

@@ -4,8 +4,8 @@ import { ProductList } from "../action/ProductAction";
 
 const Main = () => {
   const dispatch = useDispatch();
-  const data = useSelector((state)=> state)
-  console.log(data)
+  const data = useSelector((state) => state.productData);
+  console.log(data);
   const product = {
     name: "I Phone",
     type: "Mobile",
@@ -19,12 +19,9 @@ const Main = () => {
           className="btn btn-primary ms-3"
           onClick={() => dispatch(addToCart(product))}
         >
-          add to cart{" "}
+          add to cart
         </button>
-        <button
-          className="btn btn-primary ms-3"
-          onClick={() => dispatch(removeFromCart(product))}
-        >
+        <button className="btn btn-primary ms-3" onClick={() => dispatch(removeFromCart(product))} >
           remove from cart
         </button>
         <button
@@ -37,11 +34,11 @@ const Main = () => {
           className="btn btn-primary ms-3"
           onClick={() => dispatch(ProductList(product))}
         >
-         Product List
-        </button>
+          Product List
+        </button>        
       </div>
     </>
   );
 };
 
-export default Main;
+export default Main 
