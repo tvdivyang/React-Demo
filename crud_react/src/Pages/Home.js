@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import "../App.css";
-import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { signupData } from "../Utils/index";
@@ -10,36 +9,36 @@ import Input from "../component/Input";
 const Home = () => {
   // get api start
   const [user, setUser] = useState([]);
+
+  const [isDisabled, setIsdisabled] = useState(false);
+
   const fetchData = async () => {
     await axios
       .get("http://localhost:7001/todos")
       .then((data) => setUser(data.data));
   };
-  useEffect(() => {
-    fetchData()
-
-// console.log("data===>>>>>>",fetchData())
-  }, []);
+  fetchData();
   // get api end
-
   //post api start
   const [inpval, setinpval] = useState({
+    _id: "",
     Name: "",
     Email: "",
     Birthdate: "",
     Password: "",
   });
+  useEffect(() => {
 
+  },[]);
   const [error, seterror] = useState({});
   const [success, setSuccess] = useState("");
 
   const getdata = (name, value) => {
     setinpval({ ...inpval, [name]: value });
-    console.log("datatatatat ===== ", inpval);
+
     seterror({ ...error, [name]: null });
   };
-  const addDate = (e) => {
-    e.preventDefault();
+  const addDate = () => {
     const { Name, Email, Password, Birthdate } = inpval;
     console.log("adddata", inpval);
     var errors = {};
@@ -55,32 +54,45 @@ const Home = () => {
     if (!Password || Password.length <= 5) {
       errors.Password = " password Required";
     } else {
+      const postData = async () => {
+        await axios
+          .post("http://localhost:7001/todos", inpval)
+          .catch((error) => {
+            console.log("error", error);
+            setinpval(inpval);
+            setSuccess("User already registered");
+          });
+      };
       setSuccess("Registration successful");
-
       postData();
+      setinpval("");
+
     }
-
     seterror(errors);
-    setinpval("");
   };
- 
 
-  const postData = async () => {
-    const data = await axios.post("http://localhost:7001/todos", inpval);
-    console.log("data", data);
-  };
   // post api end
-
   // detle api calling start
-  const deleteData = async(id)=>{
-    const delet = await axios.delete(`http://localhost:7001/todos/`)
-    
-  if(delet.status === 200){
-    console.log("1111111",delet.data.message)
-  }
-   console.log("99015515451",delet)
-  }
+  const deleteData = async (_id) => {
+    await axios.delete(`http://localhost:7001/todos/${_id}`);
+  };
+
   // detle api calling end
+  const edite = (_id) => {
+    console.log("id", _id);
+    const users = user.filter((item) => item._id === _id);
+    console.log("2121212", users[0]);
+    setinpval(users[0]);
+    setIsdisabled(true);
+  };
+
+  const updates = async (_id) => {
+    const data = await axios.put(`http://localhost:7001/todos/${_id}`, inpval);
+    console.log("updatedata ", data.config.data);
+    setinpval("");
+    setSuccess("")
+  };
+
   return (
     <>
       {/* heading start */}
@@ -128,8 +140,16 @@ const Home = () => {
                               <h3 className="card-title mb-3 text-center">
                                 Sign Up
                               </h3>
-                              <h3 className="text-success text-center">
-                                {success}
+                              <h3
+                                className={
+                                  success
+                                    ? success === "Registration successful"
+                                      ? "text-success text-center"
+                                      : "text-danger text-center"
+                                    : ""
+                                }
+                              >
+                              {success  && <>{success}</> }
                               </h3>
                               {signupData.map((item, index) => {
                                 return (
@@ -160,11 +180,18 @@ const Home = () => {
                       Close
                     </button>
                     <button
+                     data-bs-dismiss="modal"
                       type="button"
                       className="btn btn-primary"
-                      onClick={addDate}
+                      onClick={() => {
+                        if (!isDisabled) {
+                          addDate();
+                        } else {
+                          updates();
+                        }
+                      }}
                     >
-                      Save changes
+                      {!isDisabled ? "save data" : "update"}
                     </button>
                   </div>
                 </div>
@@ -183,18 +210,21 @@ const Home = () => {
               </thead>
               <tbody>
                 {user.map((item, index) => {
-                  console.log(item.id)
                   return (
                     <tr key={index}>
-                   
                       <td>{item.Name}</td>
                       <td>{item.Email}</td>
                       <td>{item.Birthdate}</td>
                       <td>
-                        <button className="me-3">
+                        <button
+                          className="me-3"
+                          onClick={(id) => edite(item._id)}
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                        >
                           <i className="fa-regular fa-pen-to-square"></i>
                         </button>
-                        <button onClick={(e,id) => deleteData(item.id)}  >
+                        <button onClick={(id) => deleteData(item._id)}>
                           <i className="fa-solid fa-trash text-center"></i>
                         </button>
                       </td>
