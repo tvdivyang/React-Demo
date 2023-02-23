@@ -1,25 +1,26 @@
-import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import "../App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { signupData } from "../Utils/index";
 import Input from "../component/Input";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  getDatas,
+  updatePRoduct,
+  deletePRoduct,
+  updateDatas,
+} from "../Redux/actions/index";
 
 const Home = () => {
-  // get api start
-  const [user, setUser] = useState([]);
+  // get api start);
 
   const [isDisabled, setIsdisabled] = useState(false);
+  const [userid, setUserid] = useState("");
 
-  const fetchData = async () => {
-    await axios
-      .get("http://localhost:7001/todos")
-      .then((data) => setUser(data.data));
-  };
-  fetchData();
-  // get api end
-  //post api start
+  // //post api start
   const [inpval, setinpval] = useState({
     _id: "",
     Name: "",
@@ -27,9 +28,7 @@ const Home = () => {
     Birthdate: "",
     Password: "",
   });
-  useEffect(() => {
-
-  },[]);
+  // // useEffect(() => {}, []);
   const [error, seterror] = useState({});
   const [success, setSuccess] = useState("");
 
@@ -60,27 +59,22 @@ const Home = () => {
           .catch((error) => {
             console.log("error", error);
             setinpval(inpval);
-            setSuccess("User already registered");
+            setSuccess(erres());
           });
       };
-      setSuccess("Registration successful");
+
+      setSuccess(hello());
       postData();
       setinpval("");
-
     }
     seterror(errors);
   };
 
-  // post api end
-  // detle api calling start
-  const deleteData = async (_id) => {
-    await axios.delete(`http://localhost:7001/todos/${_id}`);
-  };
+  // // post api end
 
-  // detle api calling end
   const edite = (_id) => {
     console.log("id", _id);
-    const users = user.filter((item) => item._id === _id);
+    const users = mystate.filter((item) => item._id === _id);
     console.log("2121212", users[0]);
     setinpval(users[0]);
     setIsdisabled(true);
@@ -90,9 +84,30 @@ const Home = () => {
     const data = await axios.put(`http://localhost:7001/todos/${_id}`, inpval);
     console.log("updatedata ", data.config.data);
     setinpval("");
-    setSuccess("")
+    setSuccess("");
+    setIsdisabled(false);
   };
+  const hello = () => {
+    toast.success("Success Notification !", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
+  const erres = () => {
+    toast.success("User already registered ", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
+  const mystate = useSelector((state) => state.changeTheNumber.initialState);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getDatas());
+  }, [dispatch,userid]);
+
+const helloone = () => {
+
+  console.log("userid=======>>",userid)
+}
   return (
     <>
       {/* heading start */}
@@ -149,9 +164,9 @@ const Home = () => {
                                     : ""
                                 }
                               >
-                              {success  && <>{success}</> }
+                                {success}
                               </h3>
-                              {signupData.map((item, index) => {
+                              {signupData.map((item, index) => { console.log("item12121",item)
                                 return (
                                   <Input
                                     key={index}
@@ -180,18 +195,21 @@ const Home = () => {
                       Close
                     </button>
                     <button
-                     data-bs-dismiss="modal"
+                      data-bs-dismiss="modal"
                       type="button"
                       className="btn btn-primary"
-                      onClick={() => {
-                        if (!isDisabled) {
-                          addDate();
-                        } else {
-                          updates();
-                        }
-                      }}
+                      // onClick={() => dispatch(updateDatas({userid}))}
+                      onClick={helloone}
+                      // onClick={() => {
+                      //   if (!isDisabled) {
+                      //     addDate();
+                      //   } else {
+                      //     updates();
+                      //   }
+                      // }}
                     >
                       {!isDisabled ? "save data" : "update"}
+                      <ToastContainer />{" "}
                     </button>
                   </div>
                 </div>
@@ -199,6 +217,7 @@ const Home = () => {
             </div>
             {/* modal end  */}
             {/* post api table start  */}
+
             <table className="table table-bordered mt-5">
               <thead>
                 <tr>
@@ -209,28 +228,36 @@ const Home = () => {
                 </tr>
               </thead>
               <tbody>
-                {user.map((item, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>{item.Name}</td>
-                      <td>{item.Email}</td>
-                      <td>{item.Birthdate}</td>
-                      <td>
-                        <button
-                          className="me-3"
-                          onClick={(id) => edite(item._id)}
-                          data-bs-toggle="modal"
-                          data-bs-target="#exampleModal"
-                        >
-                          <i className="fa-regular fa-pen-to-square"></i>
-                        </button>
-                        <button onClick={(id) => deleteData(item._id)}>
-                          <i className="fa-solid fa-trash text-center"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {mystate &&
+                  mystate.map((item, index) => {
+                    return (  
+                      <tr key={index}>
+                        <td>{item.Name}</td>
+                        <td>{item.Email}</td>
+                        <td>{item.Birthdate}</td>
+                        {/* {setUserid(item._id)} */}
+                        <td>
+                          <button
+                            className="me-3"
+                            // onClick={(id) => edite(item._id)}
+                            onClick={() => dispatch(updatePRoduct(item._id))}
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"
+                            >
+                            <i className="fa-regular fa-pen-to-square"></i>
+                          </button>
+                          {console.log("idididid", item._id)}
+                          <button
+                            onClick={() => dispatch(deletePRoduct(item._id))}
+                            >
+                            {/* onClick={(id) => deleteData(item._id)} */}
+                            <i className="fa-solid fa-trash text-center"></i>
+                          </button>
+                    
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
             {/* post api table end  */}
