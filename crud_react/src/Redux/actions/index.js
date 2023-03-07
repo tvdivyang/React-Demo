@@ -9,7 +9,7 @@ export const getDatas = () => {
 
 export const deletePRoduct = (_id) => {
   return async (dispatch) => {
-    const data = await axios.delete(`http://localhost:7001/todos/${_id}`);
+    await axios.delete(`http://localhost:7001/todos/${_id}`);
 
     dispatch(getDatas());
     dispatch({ type: "DELET_PRODUCT" });
@@ -24,7 +24,7 @@ export const updatePRoduct = () => {
 export const updateDatas = (_id,inpval) => {
 
   return async (dispatch) => {
-    const data = await axios.put(`http://localhost:7001/todos/${_id}`,inpval);
+    await axios.put(`http://localhost:7001/todos/${_id}`,inpval);
 
     dispatch(getDatas());
     dispatch({ type: "UPDATE_DATAS" });
@@ -35,10 +35,21 @@ export const updateDatas = (_id,inpval) => {
 export const postdatas = (inpval) => {
 
   return async (dispatch) => {
-    const data = await axios.post("http://localhost:7001/todos", inpval);
+     await axios.post("http://localhost:7001/todos", inpval);
 
     dispatch(getDatas());
     dispatch({ type: "INSERT_PRODUCT" });
 
   };
 };
+
+// export const stateget = () => {
+
+//   return async (dispatch) => {
+   
+// console.log("state get api",data)
+//     // dispatch(getDatas());
+//     dispatch({ type: "INSERT_PRODUCT" });
+
+//   };
+// };
