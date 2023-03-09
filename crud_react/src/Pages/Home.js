@@ -17,29 +17,34 @@ const Home = () => {
     State: "",
     City: "",
   });
+
+  const [stateId, setStateId] = useState("");
+
   const [open, setOpen] = useState(false);
   const [save, setSave] = useState();
   const [state, setState] = useState([]);
   const [city, setCity] = useState([]);
+  // const [stateid, setStateid] = useState();
 
-  const stateselect = async () => {
+  const statedropdown = async () => {
     const data = await axios.get("http://localhost:7001/state");
     setState(data.data);
   };
-  const cityselect = async (evenet) => {
-  
-    const dtaa = state.find((cur) => evenet.target.name && evenet.target.value === cur._id);
-    console.log("datadata",dtaa)
-    const name = dtaa.name
-    console.log("9909224875",name)
-    setinpval({ ...inpval, name});
+
+  const stateselect = async (evenet) => {
+    const dtaa = state.find(
+      (cur) => evenet.target.name && evenet.target.value === cur._id
+    );
+    const State = dtaa.name;
+    setinpval({ ...inpval, State });
     const getstateid = evenet.target.value;
-    console.log("getstate iddd", getstateid);
-    getsates(getstateid);
+    console.log("object", getstateid);
+    setStateId(getstateid);
   };
 
-  const getsates = async (getstateid) => {
-    const data = await axios.get(`http://localhost:7001/city/${getstateid}`);
+  console.log("state-id", stateId);
+  const cityselect = async () => {
+    const data = await axios.get(`http://localhost:7001/city/${stateId}`);
     console.log("dataasss", data);
     setCity(data.data);
   };
@@ -53,18 +58,18 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // cityselect();
     dispatch(getDatas());
   }, [dispatch]);
-
   const helloo = (item) => {
-    setSave(item);
     setOpen(true);
+    setSave(item);
+    setStateId(stateId);
   };
   const handalclose = () => {
     setOpen(!open);
   };
 
-  console.log("inpval", inpval);
   return (
     <>
       {/* heading start */}
@@ -89,7 +94,7 @@ const Home = () => {
               className=" right-0 position-absolute end-0 top border-0"
               data-bs-toggle="modal"
               data-bs-target="#exampleModal"
-              onClick={stateselect}
+              onClick={statedropdown}
             >
               <i className="fa-regular fa-plus  "></i>
             </button>
@@ -128,8 +133,7 @@ const Home = () => {
                               })}
                               <h6>Select State</h6>
                               <select
-                                //  value={selecte} onChange={e => cityselect(e) }
-                                onChange={(e) => cityselect(e)}
+                                onChange={(e) => stateselect(e)}
                                 className="form-select mb-3"
                                 aria-label="Default select example"
                                 name="State"
@@ -141,7 +145,7 @@ const Home = () => {
                                     <option
                                       key={index}
                                       value={item._id}
-                                      name={item.name}
+                                      State={item.name}
                                     >
                                       {item.name}
                                     </option>
@@ -155,6 +159,7 @@ const Home = () => {
                                 onChange={(e) =>
                                   getdata(e.target.name, e.target.value)
                                 }
+                                onClick={cityselect}
                                 className="form-select"
                                 aria-label="Default select example"
                                 name="City"
@@ -201,7 +206,12 @@ const Home = () => {
             {/* modal end  */}
             {/* post api table start  */}
             {open ? (
-              <UserEdit open={open} data={save} handalclose={handalclose} />
+              <UserEdit
+                open={open}
+                data={save}
+                handalclose={handalclose}
+                stateId={stateId}
+              />
             ) : (
               ""
             )}
@@ -230,6 +240,7 @@ const Home = () => {
                           <button className="me-3" onClick={() => helloo(item)}>
                             <i className="fa-regular fa-pen-to-square"></i>
                           </button>
+                          {/* {stateId=stateId} */}
 
                           <button
                             onClick={() => dispatch(deletePRoduct(item._id))}
